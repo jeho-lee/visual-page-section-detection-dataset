@@ -1,0 +1,324 @@
+<!doctype html>
+<!--
+This page is shown when the extension button is clicked, because the
+"browser_action" field in manifest.json contains the "default_popup" key with
+value "popup.html".
+-->
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <title>Chrome extension program for collect and annotate Web GUI screen</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', Arial, Helvetica, sans-serif;
+      font-size: 16px;
+      width: 600px;
+    }
+
+    #status {
+      /* avoid an excessively wide status text */
+      white-space: pre;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 400px;
+    }
+
+    .division-line {
+      border-top: 1px solid rgba(0, 0, 0, .3);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .division-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      padding-top: 5px;
+      padding-bottom: 8px;
+      margin: auto;
+      /* max-width: 284px; */
+    }
+
+    .division-box-big {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      margin: auto;
+      max-width: 500px;
+      max-height: 500px;
+    }
+    
+    .division-button-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      margin: auto;
+      max-width: 284px;
+    }
+
+    .menu-button {
+      background-color: rgb(255, 255, 255);
+      border: 2px solid rgb(127, 126, 168);
+      color: black;
+      padding: 12px 24px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    .group-button {
+      width: 40%;
+      transition: .5s;
+      border-radius: 4px;
+      border: 0;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 32px;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      margin: 8px auto;
+    }
+
+    .dui-button {
+      transition: .5s;
+      border-radius: 3px;
+      border: 0;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 22px;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      margin: 8px auto;
+    }
+
+    .dui-join-button {
+      transition: .5s;
+      border-radius: 3px;
+      border: 0;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 22px;
+      background: #f29100;
+      color: rgb(255, 255, 255);
+      text-align: center;
+      margin: 3px auto;
+    }
+
+    .others {
+      background: #5916f5;
+      width: 50%;
+    }
+
+    .others:hover {
+      background: #7e46ff;
+    }
+
+    .create:hover {
+      background: #ff9e0e;
+    }
+
+    .create {
+      background: #f29100;
+    }
+
+    .join:hover {
+      background: #7e46ff;
+    }
+
+    .join {
+      background: #5916f5;
+    }
+
+    .setup-able {
+      background: #2836fd;
+      width: 50%;
+    }
+
+    .setup-able:hover {
+      background: #6e78fc;
+    }
+
+    .setup-unable {
+      background: #69696932;
+      width: 50%;
+      pointer-events: none;
+    }
+
+    .exit {
+      background: #da2d2d;
+      width: 20%;
+    }
+
+    .exit:hover {
+      background: #db4b4b;
+    }
+
+    .enter {
+      background: #2836fd;
+      width: 20%;
+    }
+
+    .enter:hover {
+      background: #6e78fc;
+    }
+
+    .close {
+      background: #da2d2d;
+    }
+
+    .close:hover {
+      background: #db4b4b;
+    }
+
+    .enterGroup {
+      background: #2836fd;
+    }
+
+    .enterGroup:hover {
+      background: #6e78fc;
+    }
+
+    input {
+      position: absolute;
+      right: 0;
+      width: 65%;
+      font-size: 16px;
+    }
+  </style>
+  <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    -->
+  <script src="popup.js"></script>
+</head>
+
+<body>
+  
+
+  <div>
+    <div class="division-button-box">
+      <button class="dui-join-button setup-able" id="screen-capture">Start labeling</button>
+      <div class="division-line"></div>
+    </div>
+  </div>
+
+  <!--UI segments view-->
+  <div>
+    <div id="ui-segments-view" style="display: block;">
+      <div id="segments-button-view" style="display: block;">
+        <div class="division-button-box">
+          <button class="dui-join-button create" id="clear-annotation">Clear labeling</button>
+        </div>
+        <div class="division-button-box">
+          <button class="dui-join-button join" id="finish-annotation">Finish</button>
+        </div>
+      </div>
+  
+      <div id="segments-element-view" style="display: none;">
+        <div class="division-box-big">
+          <canvas id="segment-element-canvas" , style="padding: 20px;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="division-box">
+    <div id="screenshot-view">
+      
+    </div>
+  </div>
+  
+
+
+
+  <!--DUI group view-->
+  <!-- <div>
+    <div>
+      <div>
+        <div class="division-box">
+          <p>User name</p>
+          <input type="text" id="input-id" placeholder="User name">
+        </div>
+        <div id="button-login" style="display: flex; width: 100%; align-items: center; position: relative;">
+          <button class="dui-button enter" style="padding: 2px;">Enter</button>
+        </div>
+      </div>
+
+      <div id="group" style="display: none;">
+        <div class="division-box" id="group-details">
+          <div class="group-view">
+            <div class="id-view">
+              <span id="user-name"></span>
+              <span>Group ID: &nbsp;</span>
+              <span id="group-id" style="font-size: 20px">-</span>
+              <span>&nbsp;</span>
+              <span><button class="dui-join-button" id="join-my-group" style="display: none;">DUI Join</button></span>
+              <span class="joined" id="joined" style="display: none;">Joined!</span>
+            </div>
+            <div class="member-view" id="members"></div>
+          </div>
+        </div>
+
+        <div class="division-button-box">
+          <button class="dui-button setup-unable" id="DUI-setup">DUI Setup</button>
+          <button class="dui-button exit" id="DUI-exit">Exit</button>
+          <div class="division-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div id="buttons" style="display: none;">
+        <div class="division-box">
+          <div class="division-line"></div>
+          <button class="group-button create" id="group-create">Create</button>
+          <button class="group-button join" id="group-join">Join</button>
+          <div class="division-line"></div>
+        </div>
+      </div>
+
+      <div id="join-button-view" style="display: none;">
+        <div class="division-box">
+          <button class="dui-join-button others" id="other-group-join">Join other group</button>
+        </div>
+      </div>
+
+      <div id="enter-group-view" style="display: none;">
+        <div class="division-box">
+          <p>Group ID</p>
+          <input type="text" id="group-id-input" placeholder="Enter group ID">
+        </div>
+        <div class="division-box">
+          <button class="group-button enterGroup" id="group-enter">Enter</button>
+          <button class="group-button close" id="group-close">Close</button>
+          <div class="division-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="menu-button" id="button-connect" style="display: none;">Connect</button>
+    <button class="menu-button" id="button-select-all" style="display: none;">Send all elements</button>
+    <button class="menu-button" id="button-select" style="display: none;">Select element</button>=
+  </div> -->
+
+
+
+
+</body>
+
+</html>

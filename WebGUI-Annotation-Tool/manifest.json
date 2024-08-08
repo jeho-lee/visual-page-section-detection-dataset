@@ -1,0 +1,57 @@
+{
+  "manifest_version": 2,
+  "name": "WebGUI data annotation tool",
+  "version": "1.0",
+
+  "description": "An extension program for cross-device web experience",
+
+  "icons": {
+    "48": "images/icons8-split-files-64.png"
+  },
+
+  "background": {
+    "background_page": [
+      "background.html"
+    ],
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentScript.js"
+      ]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    "/libraries/jquery-3.3.1.min.js",
+    "libraries/download.js",
+    "select_UI_segments.js",
+    "popup_type_labeler.html",
+    "popup_type_labeler.js"
+  ],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "background",
+    "declarativeContent",
+    "debugger",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "http://*/*",
+    "https://*/*",
+    "https://ajax.googleapis.com/"
+  ],
+
+  "content_security_policy": "script-src 'self' https://proxy.hoons.io; object-src 'self'"
+}

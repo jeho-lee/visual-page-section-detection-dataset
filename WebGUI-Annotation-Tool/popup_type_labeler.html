@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <title>Annotator for Web GUI element</title>
+  <style>
+    body {
+      /* font-family: 'Malgun Gothic', Arial, Helvetica, sans-serif; */
+      /* font-size: 16px; */
+      /* width: 360px; */
+      margin: 0px;
+    }
+
+    .division-line {
+      border-top: 1px solid rgba(0, 0, 0, .3);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .division-box {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      padding-top: 5px;
+      padding-bottom: 8px;
+      /* margin: auto; */
+      margin-left: 5px;
+      margin-top: 5px;
+      max-width: 700px;
+    }
+  </style>
+  <script src="popup_type_labeler.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="0px" height="0px"></canvas>
+
+  <div>
+    <canvas id="preview"></canvas>
+    <div class="division-box">
+      <button id="redraw-button">redraw bounding box</button>
+    </div>
+    <div class="division-box">
+      <textarea id="type-textarea" placeholder="select element's type" style="font-size: 20px; font-weight: bold;"></textarea>
+    </div>
+  </div>
+
+  <div class="division-box">
+    <select id="type-selector-1" style="margin-right: 5px; overflow: hidden;" size=7 multiple>
+      <option>tab-bar</option>
+      <option>menu-panel</option>
+      <option>menu-bar</option>
+      <option>content-list</option>
+      <option>content-grid</option>
+    </select>
+
+    <select id="type-selector-2" style="margin-right: 5px; overflow: hidden;" size=7 multiple>
+      <option>login</option>
+      <option>form</option>
+      <option>search</option>
+    </select>
+
+    <select id="type-selector-3" style="margin-right: 5px; overflow: hidden;" size=7 multiple>
+      <option>comments</option>
+      <option>chat-panel</option>
+      <option>tool-bar</option>
+      <option>options-panel</option>
+      <option>side-panel</option>
+    </select>
+
+    <select id="type-selector-4" style="margin-right: 5px; overflow: hidden;" size=7 multiple>
+      <option>media</option>
+      <option>article</option>
+      <option>posts</option>
+      <option>contentsummary</option>       
+    </select>
+  </div>
+
+  <div class="division-box">
+    <button id="ok-button">OK</button>
+    &nbsp;
+    <button id="cancel-button">Cancel</button>
+  </div>
+
+</body>
+
+</html>

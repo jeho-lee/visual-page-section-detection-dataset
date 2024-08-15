@@ -1,0 +1,59 @@
+{
+  "manifest_version": 2,
+  "name": "Visual-Webpage-Section-Detection",
+  "version": "1.0",
+
+  "description": "An extension program for extracting visual sections on web pages",
+
+  "background": {
+    "background_page": [
+      "background.html"
+    ],
+    "scripts": [
+      "/libraries/tf.min.js",
+      "libraries/pixelmatch.js",
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "libraries/compromise.min.js",
+        "libraries/compromise-numbers.min.js",
+        "content_script.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    "select_UI_segments.js",
+    "popup_type_labeler.html",
+    "popup_type_labeler.js",
+    "worker_performance_observer.js"
+  ],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "background",
+    "declarativeContent",
+    "debugger",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "history",
+    "<all_urls>",
+    "http://*/*",
+    "https://*/*",
+    "https://ajax.googleapis.com/"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
